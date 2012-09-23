@@ -26,7 +26,7 @@ The value should be at least :
 Usage
 =====
 
-Your config file must activate phpsass plugin :
+Your config file must activate CSSprepro plugin :
 
     [jResponseHtml]
     plugins=CSSprepro
@@ -56,4 +56,14 @@ If CSSprepro\_compile's value is not valid or empty, its default value is onchan
 * always : pre-process CSS file on all requests
 * onchange : pre-process CSS file only if it has changed
 * once : pre-process CSS file once and never compile it again (until compiled file is removed)
+
+
+Note that for each sub-plugin, you can override this configuration. E.g. for "phpsass" sub-plugin you can set :
+
+    [jResponseHtml]
+    ;...
+    ; always|onchange|once
+    CSSprepro_phpsass_compile=always
+
+
 

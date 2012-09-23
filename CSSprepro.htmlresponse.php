@@ -42,18 +42,11 @@ class CSSpreproHTMLResponsePlugin implements jIHTMLResponsePlugin {
             return;
         global $gJConfig;
 
-        $compileFlag = CSSPREPRO_COMPILE_ONCHANGE;
+        $defaultCompileFlag = CSSPREPRO_COMPILE_ONCHANGE;
         if( isset($gJConfig->jResponseHtml['CSSprepro_compile']) ) {
-            switch($gJConfig->jResponseHtml['CSSprepro_compile']) {
-            case 'always':
-                $compileFlag = CSSPREPRO_COMPILE_ALWAYS;
-                break;
-            case 'onchange':
-                $compileFlag = CSSPREPRO_COMPILE_ONCHANGE;
-                break;
-            case 'once':
-                $compileFlag = CSSPREPRO_COMPILE_ONCE;
-                break;
+            $configCompileFlag = $this->translateCompileFlag( $gJConfig->jResponseHtml['CSSprepro_compile'] );
+            if( $configCompileFlag !== null ) {
+                $defaultCompileFlag = $configCompileFlag;
             }
         }
 
@@ -78,6 +71,14 @@ class CSSpreproHTMLResponsePlugin implements jIHTMLResponsePlugin {
                     if( substr($CSSLinkUrl, 0, strlen($gJConfig->urlengine['basePath'])) != $gJConfig->urlengine['basePath'] ) {
                         throw new Exception("File $CSSLinkUrl seems not to be located in your basePath : it can not be processed with CSSprepro");
                     } else {
+                        $compileFlag = $defaultCompileFlag;
+                        if( isset($gJConfig->jResponseHtml['CSSprepro_'.$subPluginName.'_compile']) ) {
+                            $pluginCompileFlag = $this->translateCompileFlag( $gJConfig->jResponseHtml['CSSprepro_'.$subPluginName.'_compile'] );
+                            if( $pluginCompileFlag !== null ) {
+                                $compileFlag = $pluginCompileFlag;
+                            }
+                        }
+
                         $filePath = jApp::wwwPath() . substr($CSSLinkUrl, strlen($gJConfig->urlengine['basePath']));
 
                         $outputSuffix = '.css';
@@ -123,6 +124,26 @@ class CSSpreproHTMLResponsePlugin implements jIHTMLResponsePlugin {
      * called just before the output of an error page
      */
     public function beforeOutputError() {
+    }
+
+
+
+    private function translateCompileFlag( $compileFlagString ) {
+        $compileFlag = null;
+
+        switch($compileFlagString) {
+        case 'always':
+            $compileFlag = CSSPREPRO_COMPILE_ALWAYS;
+            break;
+        case 'onchange':
+            $compileFlag = CSSPREPRO_COMPILE_ONCHANGE;
+            break;
+        case 'once':
+            $compileFlag = CSSPREPRO_COMPILE_ONCE;
+            break;
+        }
+
+        return $compileFlag;
     }
 }
 
