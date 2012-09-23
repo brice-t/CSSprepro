@@ -34,7 +34,7 @@ Your config file must activate CSSprepro plugin :
 As itself, this plugin has no effect. You should add at least one sub-plugin and configure CSSprepro with _CSSprepro\_plugins_ to use it. E.g. :
 
     [jResponseHtml]
-    CSSprepro_plugins[]=phpsass
+    CSSprepro_plugins[]=jphpsass
 
 N.B. : the directories containing pre-processed CSS files should be writable by your web server ! Indeed, compiled files will be written in that very same directory so that relative urls go on working ...
 
@@ -58,12 +58,12 @@ If CSSprepro\_compile's value is not valid or empty, its default value is onchan
 * once : pre-process CSS file once and never compile it again (until compiled file is removed)
 
 
-Note that for each sub-plugin, you can override this configuration. E.g. for "phpsass" sub-plugin you can set :
+Note that for each sub-plugin, you can override this configuration. E.g. for "jphpsass" sub-plugin you can set :
 
     [jResponseHtml]
     ;...
     ; always|onchange|once
-    CSSprepro_phpsass_compile=always
+    CSSprepro_jphpsass_compile=always
 
 
 
