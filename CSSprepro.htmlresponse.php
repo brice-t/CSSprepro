@@ -12,6 +12,8 @@
 * plugin for jResponseHTML, which pre-processes CSS files (e.g. Stylus, Less, Sass) using sub-plugins
 */
 
+require( 'ICSSpreproPlugin.class.php' );
+
 define('CSSPREPRO_COMPILE_ALWAYS', 1 );
 define('CSSPREPRO_COMPILE_ONCHANGE', 2 ); //default value : CSSprepro default behaviour
 define('CSSPREPRO_COMPILE_ONCE', 3 );
@@ -55,9 +57,14 @@ class CSSpreproHTMLResponsePlugin implements jIHTMLResponsePlugin {
             }
         }
 
-        $subPlugins = $gJConfig->jResponseHtml['CSSprepro_plugins'];
+        $subPlugins = array();
         foreach( $gJConfig->jResponseHtml['CSSprepro_plugins'] as $subPluginName ) {
-            $subPlugins[$subPluginName] = jApp::loadPlugin($subPluginName, 'CSSprepro', '.CSSprepro.php', $name.'CSSpreproPlugin', $this);
+            $subPlugin = jApp::loadPlugin($subPluginName, 'CSSprepro', '.CSSprepro.php', $subPluginName.'CSSpreproPlugin', $this);
+            if( $subPlugin ) {
+                $subPlugins[$subPluginName] = $subPlugin;
+            } else {
+                trigger_error( "CSSprepro plugin could not find sub-plugin '$subPluginName'", E_USER_ERROR );
+            }
         }
 
         $inputCSSLinks = $this->response->getCSSLinks();
@@ -94,7 +101,7 @@ class CSSpreproHTMLResponsePlugin implements jIHTMLResponsePlugin {
                             trigger_error("CSSprepro fatal error on file $filePath:<br />".$ex->getMessage(), E_USER_ERROR);
                         }
                     }
-                    $subPlugin->cleanCSSLinkParams( &$CSSLinkParams );
+                    $subPlugin->cleanCSSLinkParams( $CSSLinkParams );
                     break;
                 }
             }
