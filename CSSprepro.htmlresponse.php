@@ -12,7 +12,7 @@
 * plugin for jResponseHTML, which pre-processes CSS files (e.g. Stylus, Less, Sass) using sub-plugins
 */
 
-require( 'ICSSpreproPlugin.class.php' );
+require_once( 'ICSSpreproPlugin.class.php' );
 
 define('CSSPREPRO_COMPILE_ALWAYS', 1 );
 define('CSSPREPRO_COMPILE_ONCHANGE', 2 ); //default value : CSSprepro default behaviour
