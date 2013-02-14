@@ -3,7 +3,7 @@
  * @package     
  * @subpackage  
  * @author      Brice Tencé
- * @copyright   2012 Brice Tencé
+ * @copyright   2012-2013 Brice Tencé
  * @link        http://www.jelix.org
  * @licence     GNU Lesser General Public Licence see LICENCE file or http://www.gnu.org/licenses/lgpl.html
  */
