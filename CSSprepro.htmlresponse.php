@@ -40,7 +40,8 @@ class CSSpreproHTMLResponsePlugin implements jIHTMLResponsePlugin {
     public function beforeOutput() {
         if (!($this->response instanceof jResponseHtml))
             return;
-        global $gJConfig;
+
+        $gJConfig = jApp::config();
 
         $defaultCompileFlag = CSSPREPRO_COMPILE_ONCHANGE;
         if( isset($gJConfig->jResponseHtml['CSSprepro_compile']) ) {
